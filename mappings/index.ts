@@ -1,65 +1,24 @@
-import BN from 'bn.js'
-import { DatabaseManager, EventContext, StoreContext } from '@subsquid/hydra-common'
-import { Account, HistoricalBalance } from '../generated/model'
-import { Balances } from '../chain'
+import {EventContext, StoreContext} from "@subsquid/hydra-common"
+import BN from "bn.js"
+import {Dex} from "../chain"
+import {Swap} from "../generated/model"
 
 
-export async function balancesTransfer({
-  store,
-  event,
-  block,
-  extrinsic,
-}: EventContext & StoreContext): Promise<void> {
-
-  const [from, to, value] = new Balances.TransferEvent(event).params
-  const tip = extrinsic ? new BN(extrinsic.tip.toString(10)) : new BN(0)
-
-  const fromAcc = await getOrCreate(store, Account, from.toHex())
-  fromAcc.wallet = from.toHuman()
-  fromAcc.balance = fromAcc.balance || new BN(0)
-  fromAcc.balance = fromAcc.balance.sub(value)
-  fromAcc.balance = fromAcc.balance.sub(tip)
-  await store.save(fromAcc)
-
-  const toAcc = await getOrCreate(store, Account, to.toHex())
-  toAcc.wallet = to.toHuman()
-  toAcc.balance = toAcc.balance || new BN(0)
-  toAcc.balance = toAcc.balance.add(value)
-  await store.save(toAcc)
-
-  const hbFrom = new HistoricalBalance()
-  hbFrom.account = fromAcc;
-  hbFrom.balance = fromAcc.balance;
-  hbFrom.timestamp = new BN(block.timestamp)
-  await store.save(hbFrom)
-
-  const hbTo = new HistoricalBalance()
-  hbTo.account = toAcc;
-  hbTo.balance = toAcc.balance;
-  hbTo.timestamp = new BN(block.timestamp)
-  await store.save(hbTo)
-}
-
-
-async function getOrCreate<T extends {id: string}>(
-  store: DatabaseManager,
-  entityConstructor: EntityConstructor<T>,
-  id: string
-): Promise<T> {
-
-  let e = await store.get(entityConstructor, {
-    where: { id },
-  })
-
-  if (e == null) {
-    e = new entityConstructor()
-    e.id = id
-  }
-
-  return e
-}
-
-
-type EntityConstructor<T> = {
-  new (...args: any[]): T
+export async function handleSwap({store, event, block}: EventContext & StoreContext) {
+    let [account, path, changes] = new Dex.SwapEvent(event).params
+    let timestamp = new BN(block.timestamp)
+    for (let i = 1; i < path.length; i++) {
+        let fromCurrency = path[i-1]
+        let toCurrency = path[i]
+        if (fromCurrency.isToken && toCurrency.isToken) {
+            await store.save(new Swap({
+                id: event.id + '-' + i,
+                timestamp,
+                fromCurrency: fromCurrency.asToken.toString(),
+                toCurrency: toCurrency.asToken.toString(),
+                fromAmount: changes[i-1].toBn(),
+                toAmount: changes[i].toBn()
+            }))
+        }
+    }
 }

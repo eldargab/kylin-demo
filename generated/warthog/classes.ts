@@ -24,11 +24,9 @@ const { GraphQLJSONObject } = require('graphql-type-json');
 import { BaseWhereInput, JsonObject, PaginationArgs, DateOnlyString, DateTimeString, BigInt, Bytes } from '@subsquid/warthog';
 
 // @ts-ignore
-import { HistoricalBalance } from "../modules/historical-balance/historical-balance.model";
-// @ts-ignore
-import { Account } from "../modules/account/account.model";
+import { Swap } from "../modules/swap/swap.model";
 
-export enum HistoricalBalanceOrderByEnum {
+export enum SwapOrderByEnum {
   createdAt_ASC = "createdAt_ASC",
   createdAt_DESC = "createdAt_DESC",
 
@@ -38,22 +36,28 @@ export enum HistoricalBalanceOrderByEnum {
   deletedAt_ASC = "deletedAt_ASC",
   deletedAt_DESC = "deletedAt_DESC",
 
-  account_ASC = "account_ASC",
-  account_DESC = "account_DESC",
-
-  balance_ASC = "balance_ASC",
-  balance_DESC = "balance_DESC",
-
   timestamp_ASC = "timestamp_ASC",
   timestamp_DESC = "timestamp_DESC",
+
+  fromCurrency_ASC = "fromCurrency_ASC",
+  fromCurrency_DESC = "fromCurrency_DESC",
+
+  toCurrency_ASC = "toCurrency_ASC",
+  toCurrency_DESC = "toCurrency_DESC",
+
+  fromAmount_ASC = "fromAmount_ASC",
+  fromAmount_DESC = "fromAmount_DESC",
+
+  toAmount_ASC = "toAmount_ASC",
+  toAmount_DESC = "toAmount_DESC",
 }
 
-registerEnumType(HistoricalBalanceOrderByEnum, {
-  name: "HistoricalBalanceOrderByInput",
+registerEnumType(SwapOrderByEnum, {
+  name: "SwapOrderByInput",
 });
 
 @TypeGraphQLInputType()
-export class HistoricalBalanceWhereInput {
+export class SwapWhereInput {
   @TypeGraphQLField(() => ID, { nullable: true })
   id_eq?: string;
 
@@ -125,24 +129,6 @@ export class HistoricalBalanceWhereInput {
 
   @TypeGraphQLField(() => [ID], { nullable: true })
   deletedById_in?: string[];
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_eq?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_gt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_gte?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_lt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  balance_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
   timestamp_eq?: string;
@@ -162,252 +148,138 @@ export class HistoricalBalanceWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   timestamp_in?: string[];
 
-  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  account?: AccountWhereInput;
-
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  AND?: [HistoricalBalanceWhereInput];
-
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  OR?: [HistoricalBalanceWhereInput];
-}
-
-@TypeGraphQLInputType()
-export class HistoricalBalanceWhereUniqueInput {
-  @TypeGraphQLField(() => ID)
-  id?: string;
-}
-
-@TypeGraphQLInputType()
-export class HistoricalBalanceCreateInput {
-  @TypeGraphQLField(() => ID)
-  account!: string;
-
-  @TypeGraphQLField()
-  balance!: string;
-
-  @TypeGraphQLField()
-  timestamp!: string;
-}
-
-@TypeGraphQLInputType()
-export class HistoricalBalanceUpdateInput {
-  @TypeGraphQLField(() => ID, { nullable: true })
-  account?: string;
+  @TypeGraphQLField({ nullable: true })
+  fromCurrency_eq?: string;
 
   @TypeGraphQLField({ nullable: true })
-  balance?: string;
+  fromCurrency_contains?: string;
 
   @TypeGraphQLField({ nullable: true })
-  timestamp?: string;
-}
-
-@ArgsType()
-export class HistoricalBalanceWhereArgs extends PaginationArgs {
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  where?: HistoricalBalanceWhereInput;
-
-  @TypeGraphQLField(() => HistoricalBalanceOrderByEnum, { nullable: true })
-  orderBy?: HistoricalBalanceOrderByEnum[];
-}
-
-@ArgsType()
-export class HistoricalBalanceCreateManyArgs {
-  @TypeGraphQLField(() => [HistoricalBalanceCreateInput])
-  data!: HistoricalBalanceCreateInput[];
-}
-
-@ArgsType()
-export class HistoricalBalanceUpdateArgs {
-  @TypeGraphQLField() data!: HistoricalBalanceUpdateInput;
-  @TypeGraphQLField() where!: HistoricalBalanceWhereUniqueInput;
-}
-
-export enum AccountOrderByEnum {
-  createdAt_ASC = "createdAt_ASC",
-  createdAt_DESC = "createdAt_DESC",
-
-  updatedAt_ASC = "updatedAt_ASC",
-  updatedAt_DESC = "updatedAt_DESC",
-
-  deletedAt_ASC = "deletedAt_ASC",
-  deletedAt_DESC = "deletedAt_DESC",
-
-  wallet_ASC = "wallet_ASC",
-  wallet_DESC = "wallet_DESC",
-
-  balance_ASC = "balance_ASC",
-  balance_DESC = "balance_DESC",
-}
-
-registerEnumType(AccountOrderByEnum, {
-  name: "AccountOrderByInput",
-});
-
-@TypeGraphQLInputType()
-export class AccountWhereInput {
-  @TypeGraphQLField(() => ID, { nullable: true })
-  id_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  id_in?: string[];
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_eq?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_lt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_lte?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_gt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  createdAt_gte?: Date;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  createdById_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  createdById_in?: string[];
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  updatedAt_eq?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  updatedAt_lt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  updatedAt_lte?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  updatedAt_gt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  updatedAt_gte?: Date;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  updatedById_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  updatedById_in?: string[];
+  fromCurrency_startsWith?: string;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_all?: Boolean;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  deletedAt_eq?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  deletedAt_lt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  deletedAt_lte?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  deletedAt_gt?: Date;
-
-  @TypeGraphQLField(() => DateTime, { nullable: true })
-  deletedAt_gte?: Date;
-
-  @TypeGraphQLField(() => ID, { nullable: true })
-  deletedById_eq?: string;
-
-  @TypeGraphQLField(() => [ID], { nullable: true })
-  deletedById_in?: string[];
-
-  @TypeGraphQLField({ nullable: true })
-  wallet_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  wallet_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  wallet_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  wallet_endsWith?: string;
+  fromCurrency_endsWith?: string;
 
   @TypeGraphQLField(() => [String], { nullable: true })
-  wallet_in?: string[];
+  fromCurrency_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  toCurrency_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  toCurrency_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  toCurrency_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  toCurrency_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  toCurrency_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_eq?: string;
+  fromAmount_eq?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_gt?: string;
+  fromAmount_gt?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_gte?: string;
+  fromAmount_gte?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_lt?: string;
+  fromAmount_lt?: string;
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
-  balance_lte?: string;
+  fromAmount_lte?: string;
 
   @TypeGraphQLField(() => [BigInt], { nullable: true })
-  balance_in?: string[];
+  fromAmount_in?: string[];
 
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  historicalBalances_none?: HistoricalBalanceWhereInput;
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  toAmount_eq?: string;
 
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  historicalBalances_some?: HistoricalBalanceWhereInput;
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  toAmount_gt?: string;
 
-  @TypeGraphQLField(() => HistoricalBalanceWhereInput, { nullable: true })
-  historicalBalances_every?: HistoricalBalanceWhereInput;
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  toAmount_gte?: string;
 
-  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  AND?: [AccountWhereInput];
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  toAmount_lt?: string;
 
-  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  OR?: [AccountWhereInput];
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  toAmount_lte?: string;
+
+  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  toAmount_in?: string[];
+
+  @TypeGraphQLField(() => SwapWhereInput, { nullable: true })
+  AND?: [SwapWhereInput];
+
+  @TypeGraphQLField(() => SwapWhereInput, { nullable: true })
+  OR?: [SwapWhereInput];
 }
 
 @TypeGraphQLInputType()
-export class AccountWhereUniqueInput {
+export class SwapWhereUniqueInput {
   @TypeGraphQLField(() => ID)
   id?: string;
 }
 
 @TypeGraphQLInputType()
-export class AccountCreateInput {
+export class SwapCreateInput {
   @TypeGraphQLField()
-  wallet!: string;
+  timestamp!: string;
 
   @TypeGraphQLField()
-  balance!: string;
+  fromCurrency!: string;
+
+  @TypeGraphQLField()
+  toCurrency!: string;
+
+  @TypeGraphQLField()
+  fromAmount!: string;
+
+  @TypeGraphQLField()
+  toAmount!: string;
 }
 
 @TypeGraphQLInputType()
-export class AccountUpdateInput {
+export class SwapUpdateInput {
   @TypeGraphQLField({ nullable: true })
-  wallet?: string;
+  timestamp?: string;
 
   @TypeGraphQLField({ nullable: true })
-  balance?: string;
+  fromCurrency?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  toCurrency?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  fromAmount?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  toAmount?: string;
 }
 
 @ArgsType()
-export class AccountWhereArgs extends PaginationArgs {
-  @TypeGraphQLField(() => AccountWhereInput, { nullable: true })
-  where?: AccountWhereInput;
+export class SwapWhereArgs extends PaginationArgs {
+  @TypeGraphQLField(() => SwapWhereInput, { nullable: true })
+  where?: SwapWhereInput;
 
-  @TypeGraphQLField(() => AccountOrderByEnum, { nullable: true })
-  orderBy?: AccountOrderByEnum[];
+  @TypeGraphQLField(() => SwapOrderByEnum, { nullable: true })
+  orderBy?: SwapOrderByEnum[];
 }
 
 @ArgsType()
-export class AccountCreateManyArgs {
-  @TypeGraphQLField(() => [AccountCreateInput])
-  data!: AccountCreateInput[];
+export class SwapCreateManyArgs {
+  @TypeGraphQLField(() => [SwapCreateInput])
+  data!: SwapCreateInput[];
 }
 
 @ArgsType()
-export class AccountUpdateArgs {
-  @TypeGraphQLField() data!: AccountUpdateInput;
-  @TypeGraphQLField() where!: AccountWhereUniqueInput;
+export class SwapUpdateArgs {
+  @TypeGraphQLField() data!: SwapUpdateInput;
+  @TypeGraphQLField() where!: SwapWhereUniqueInput;
 }

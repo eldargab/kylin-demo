@@ -5,18 +5,20 @@ hydraVersion: "4"
 
 typegen:
   metadata:
-    source: wss://kusama-rpc.polkadot.io/
+    source: wss://karura-rpc-3.aca-api.network/ws
   events:
-    - balances.Transfer
-  calls:
-    - timestamp.set
+    - dex.Swap
+  customTypes:
+    lib: "@acala-network/types/interfaces"
+    typedefsLoc: types.json
   outDir: chain
 
 mappings:
   mappingsModule: mappings
+  range: "[446936,)"
   eventHandlers:
-    - event: balances.Transfer
-      handler: balancesTransfer
+    - event: dex.Swap
+      handler: handleSwap
   extrinsicHandlers:
   preBlockHooks:
   postBlockHooks:

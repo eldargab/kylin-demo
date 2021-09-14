@@ -1,98 +1,3 @@
-type Account implements BaseGraphQLObject {
-  id: ID!
-  createdAt: DateTime!
-  createdById: String!
-  updatedAt: DateTime
-  updatedById: String
-  deletedAt: DateTime
-  deletedById: String
-  version: Int!
-  wallet: String!
-  balance: BigInt!
-  historicalBalances: [HistoricalBalance!]!
-}
-
-type AccountConnection {
-  totalCount: Int!
-  edges: [AccountEdge!]!
-  pageInfo: PageInfo!
-}
-
-input AccountCreateInput {
-  wallet: String!
-  balance: String!
-}
-
-type AccountEdge {
-  node: Account!
-  cursor: String!
-}
-
-enum AccountOrderByInput {
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  deletedAt_ASC
-  deletedAt_DESC
-  wallet_ASC
-  wallet_DESC
-  balance_ASC
-  balance_DESC
-}
-
-input AccountUpdateInput {
-  wallet: String
-  balance: String
-}
-
-input AccountWhereInput {
-  id_eq: ID
-  id_in: [ID!]
-  createdAt_eq: DateTime
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  createdById_eq: ID
-  createdById_in: [ID!]
-  updatedAt_eq: DateTime
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  updatedById_eq: ID
-  updatedById_in: [ID!]
-  deletedAt_all: Boolean
-  deletedAt_eq: DateTime
-  deletedAt_lt: DateTime
-  deletedAt_lte: DateTime
-  deletedAt_gt: DateTime
-  deletedAt_gte: DateTime
-  deletedById_eq: ID
-  deletedById_in: [ID!]
-  wallet_eq: String
-  wallet_contains: String
-  wallet_startsWith: String
-  wallet_endsWith: String
-  wallet_in: [String!]
-  balance_eq: BigInt
-  balance_gt: BigInt
-  balance_gte: BigInt
-  balance_lt: BigInt
-  balance_lte: BigInt
-  balance_in: [BigInt!]
-  historicalBalances_none: HistoricalBalanceWhereInput
-  historicalBalances_some: HistoricalBalanceWhereInput
-  historicalBalances_every: HistoricalBalanceWhereInput
-  AND: [AccountWhereInput!]
-  OR: [AccountWhereInput!]
-}
-
-input AccountWhereUniqueInput {
-  id: ID!
-}
-
 interface BaseGraphQLObject {
   id: ID!
   createdAt: DateTime!
@@ -166,7 +71,36 @@ type Hello {
   greeting: String!
 }
 
-type HistoricalBalance implements BaseGraphQLObject {
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type ProcessorState {
+  lastCompleteBlock: Float!
+  lastProcessedEvent: String!
+  indexerHead: Float!
+  chainHead: Float!
+}
+
+type Query {
+  swaps(offset: Int, limit: Int = 50, where: SwapWhereInput, orderBy: [SwapOrderByInput!]): [Swap!]!
+  swapByUniqueInput(where: SwapWhereUniqueInput!): Swap
+  swapsConnection(first: Int, after: String, last: Int, before: String, where: SwapWhereInput, orderBy: [SwapOrderByInput!]): SwapConnection!
+  hello: Hello!
+}
+
+type StandardDeleteResponse {
+  id: ID!
+}
+
+type Subscription {
+  stateSubscription: ProcessorState!
+}
+
+type Swap implements BaseGraphQLObject {
   id: ID!
   createdAt: DateTime!
   createdById: String!
@@ -175,51 +109,60 @@ type HistoricalBalance implements BaseGraphQLObject {
   deletedAt: DateTime
   deletedById: String
   version: Int!
-  account: Account!
-  accountId: String!
-  balance: BigInt!
   timestamp: BigInt!
+  fromCurrency: String!
+  toCurrency: String!
+  fromAmount: BigInt!
+  toAmount: BigInt!
 }
 
-type HistoricalBalanceConnection {
+type SwapConnection {
   totalCount: Int!
-  edges: [HistoricalBalanceEdge!]!
+  edges: [SwapEdge!]!
   pageInfo: PageInfo!
 }
 
-input HistoricalBalanceCreateInput {
-  account: ID!
-  balance: String!
+input SwapCreateInput {
   timestamp: String!
+  fromCurrency: String!
+  toCurrency: String!
+  fromAmount: String!
+  toAmount: String!
 }
 
-type HistoricalBalanceEdge {
-  node: HistoricalBalance!
+type SwapEdge {
+  node: Swap!
   cursor: String!
 }
 
-enum HistoricalBalanceOrderByInput {
+enum SwapOrderByInput {
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
   deletedAt_ASC
   deletedAt_DESC
-  account_ASC
-  account_DESC
-  balance_ASC
-  balance_DESC
   timestamp_ASC
   timestamp_DESC
+  fromCurrency_ASC
+  fromCurrency_DESC
+  toCurrency_ASC
+  toCurrency_DESC
+  fromAmount_ASC
+  fromAmount_DESC
+  toAmount_ASC
+  toAmount_DESC
 }
 
-input HistoricalBalanceUpdateInput {
-  account: ID
-  balance: String
+input SwapUpdateInput {
   timestamp: String
+  fromCurrency: String
+  toCurrency: String
+  fromAmount: String
+  toAmount: String
 }
 
-input HistoricalBalanceWhereInput {
+input SwapWhereInput {
   id_eq: ID
   id_in: [ID!]
   createdAt_eq: DateTime
@@ -244,55 +187,38 @@ input HistoricalBalanceWhereInput {
   deletedAt_gte: DateTime
   deletedById_eq: ID
   deletedById_in: [ID!]
-  balance_eq: BigInt
-  balance_gt: BigInt
-  balance_gte: BigInt
-  balance_lt: BigInt
-  balance_lte: BigInt
-  balance_in: [BigInt!]
   timestamp_eq: BigInt
   timestamp_gt: BigInt
   timestamp_gte: BigInt
   timestamp_lt: BigInt
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
-  account: AccountWhereInput
-  AND: [HistoricalBalanceWhereInput!]
-  OR: [HistoricalBalanceWhereInput!]
+  fromCurrency_eq: String
+  fromCurrency_contains: String
+  fromCurrency_startsWith: String
+  fromCurrency_endsWith: String
+  fromCurrency_in: [String!]
+  toCurrency_eq: String
+  toCurrency_contains: String
+  toCurrency_startsWith: String
+  toCurrency_endsWith: String
+  toCurrency_in: [String!]
+  fromAmount_eq: BigInt
+  fromAmount_gt: BigInt
+  fromAmount_gte: BigInt
+  fromAmount_lt: BigInt
+  fromAmount_lte: BigInt
+  fromAmount_in: [BigInt!]
+  toAmount_eq: BigInt
+  toAmount_gt: BigInt
+  toAmount_gte: BigInt
+  toAmount_lt: BigInt
+  toAmount_lte: BigInt
+  toAmount_in: [BigInt!]
+  AND: [SwapWhereInput!]
+  OR: [SwapWhereInput!]
 }
 
-input HistoricalBalanceWhereUniqueInput {
+input SwapWhereUniqueInput {
   id: ID!
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-type ProcessorState {
-  lastCompleteBlock: Float!
-  lastProcessedEvent: String!
-  indexerHead: Float!
-  chainHead: Float!
-}
-
-type Query {
-  accounts(offset: Int, limit: Int = 50, where: AccountWhereInput, orderBy: [AccountOrderByInput!]): [Account!]!
-  accountByUniqueInput(where: AccountWhereUniqueInput!): Account
-  accountsConnection(first: Int, after: String, last: Int, before: String, where: AccountWhereInput, orderBy: [AccountOrderByInput!]): AccountConnection!
-  historicalBalances(offset: Int, limit: Int = 50, where: HistoricalBalanceWhereInput, orderBy: [HistoricalBalanceOrderByInput!]): [HistoricalBalance!]!
-  historicalBalanceByUniqueInput(where: HistoricalBalanceWhereUniqueInput!): HistoricalBalance
-  historicalBalancesConnection(first: Int, after: String, last: Int, before: String, where: HistoricalBalanceWhereInput, orderBy: [HistoricalBalanceOrderByInput!]): HistoricalBalanceConnection!
-  hello: Hello!
-}
-
-type StandardDeleteResponse {
-  id: ID!
-}
-
-type Subscription {
-  stateSubscription: ProcessorState!
 }

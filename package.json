@@ -19,6 +19,7 @@
     "query-node:start": "ts-node --type-check ./generated/server/index.ts"
   },
   "dependencies": {
+    "@acala-network/types": "^2.2.1",
     "@subsquid/hydra-cli": "4.1.0",
     "@subsquid/hydra-processor": "4.1.0",
     "@subsquid/hydra-typegen": "4.1.0"
