@@ -6,3 +6,16 @@ type Swap @entity {
   fromAmount: BigInt!
   toAmount: BigInt!
 }
+
+
+type LiquidityChange @entity {
+  id: ID!
+  timestamp: BigInt!
+  blockNumber: Int!
+  eventIdx: Int!
+  currencyZero: String!
+  balanceZero: BigInt!
+  currencyOne: String!
+  balanceOne: BigInt!
+  liquidity: BigInt!
+}

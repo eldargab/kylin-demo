@@ -6,10 +6,15 @@ import { IResolvers } from 'graphql-tools/dist/Interfaces'
 import * as schema from  './schema.graphql'
 
 export interface Query {
+    liquidityChanges: <T = Array<LiquidityChange>>(args: { offset?: Int | null, limit?: Int | null, where?: LiquidityChangeWhereInput | null, orderBy?: Array<LiquidityChangeOrderByInput> | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    liquidityChangeByUniqueInput: <T = LiquidityChange | null>(args: { where: LiquidityChangeWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
+    liquidityChangesConnection: <T = LiquidityChangeConnection>(args: { first?: Int | null, after?: String | null, last?: Int | null, before?: String | null, where?: LiquidityChangeWhereInput | null, orderBy?: Array<LiquidityChangeOrderByInput> | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     swaps: <T = Array<Swap>>(args: { offset?: Int | null, limit?: Int | null, where?: SwapWhereInput | null, orderBy?: Array<SwapOrderByInput> | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     swapByUniqueInput: <T = Swap | null>(args: { where: SwapWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     swapsConnection: <T = SwapConnection>(args: { first?: Int | null, after?: String | null, last?: Int | null, before?: String | null, where?: SwapWhereInput | null, orderBy?: Array<SwapOrderByInput> | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    hello: <T = Hello>(args?: {}, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
+    ratesHistory: <T = Array<ExchangeStats>>(args: { params: ExchangeRatesInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    currentExchangeRates: <T = Array<ExchangeStats>>(args: { intervalMinutes?: Int | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    lastExchanges: <T = Array<LastExchange>>(args?: {}, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
   }
 
 export interface Mutation {}
@@ -41,6 +46,29 @@ export const Binding = makeBindingClass<BindingConstructor<Binding>>({ schema: s
 /**
  * Types
 */
+
+export type LiquidityChangeOrderByInput =   'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'deletedAt_ASC' |
+  'deletedAt_DESC' |
+  'timestamp_ASC' |
+  'timestamp_DESC' |
+  'blockNumber_ASC' |
+  'blockNumber_DESC' |
+  'eventIdx_ASC' |
+  'eventIdx_DESC' |
+  'currencyZero_ASC' |
+  'currencyZero_DESC' |
+  'balanceZero_ASC' |
+  'balanceZero_DESC' |
+  'currencyOne_ASC' |
+  'currencyOne_DESC' |
+  'balanceOne_ASC' |
+  'balanceOne_DESC' |
+  'liquidity_ASC' |
+  'liquidity_DESC'
 
 export type SwapOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -81,6 +109,114 @@ export interface BaseWhereInput {
   deletedAt_gt?: String | null
   deletedAt_gte?: String | null
   deletedById_eq?: String | null
+}
+
+export interface ExchangeRatesInput {
+  intervalMinutes: Int
+  pair?: String | null
+  periodFrom?: String | null
+  periodTo?: String | null
+}
+
+export interface LiquidityChangeCreateInput {
+  timestamp: String
+  blockNumber: Float
+  eventIdx: Float
+  currencyZero: String
+  balanceZero: String
+  currencyOne: String
+  balanceOne: String
+  liquidity: String
+}
+
+export interface LiquidityChangeUpdateInput {
+  timestamp?: String | null
+  blockNumber?: Float | null
+  eventIdx?: Float | null
+  currencyZero?: String | null
+  balanceZero?: String | null
+  currencyOne?: String | null
+  balanceOne?: String | null
+  liquidity?: String | null
+}
+
+export interface LiquidityChangeWhereInput {
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
+  deletedAt_all?: Boolean | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
+  timestamp_eq?: BigInt | null
+  timestamp_gt?: BigInt | null
+  timestamp_gte?: BigInt | null
+  timestamp_lt?: BigInt | null
+  timestamp_lte?: BigInt | null
+  timestamp_in?: BigInt[] | BigInt | null
+  blockNumber_eq?: Int | null
+  blockNumber_gt?: Int | null
+  blockNumber_gte?: Int | null
+  blockNumber_lt?: Int | null
+  blockNumber_lte?: Int | null
+  blockNumber_in?: Int[] | Int | null
+  eventIdx_eq?: Int | null
+  eventIdx_gt?: Int | null
+  eventIdx_gte?: Int | null
+  eventIdx_lt?: Int | null
+  eventIdx_lte?: Int | null
+  eventIdx_in?: Int[] | Int | null
+  currencyZero_eq?: String | null
+  currencyZero_contains?: String | null
+  currencyZero_startsWith?: String | null
+  currencyZero_endsWith?: String | null
+  currencyZero_in?: String[] | String | null
+  balanceZero_eq?: BigInt | null
+  balanceZero_gt?: BigInt | null
+  balanceZero_gte?: BigInt | null
+  balanceZero_lt?: BigInt | null
+  balanceZero_lte?: BigInt | null
+  balanceZero_in?: BigInt[] | BigInt | null
+  currencyOne_eq?: String | null
+  currencyOne_contains?: String | null
+  currencyOne_startsWith?: String | null
+  currencyOne_endsWith?: String | null
+  currencyOne_in?: String[] | String | null
+  balanceOne_eq?: BigInt | null
+  balanceOne_gt?: BigInt | null
+  balanceOne_gte?: BigInt | null
+  balanceOne_lt?: BigInt | null
+  balanceOne_lte?: BigInt | null
+  balanceOne_in?: BigInt[] | BigInt | null
+  liquidity_eq?: BigInt | null
+  liquidity_gt?: BigInt | null
+  liquidity_gte?: BigInt | null
+  liquidity_lt?: BigInt | null
+  liquidity_lte?: BigInt | null
+  liquidity_in?: BigInt[] | BigInt | null
+  AND?: LiquidityChangeWhereInput[] | LiquidityChangeWhereInput | null
+  OR?: LiquidityChangeWhereInput[] | LiquidityChangeWhereInput | null
+}
+
+export interface LiquidityChangeWhereUniqueInput {
+  id: ID_Output
 }
 
 export interface SwapCreateInput {
@@ -197,8 +333,51 @@ export interface BaseModelUUID extends BaseGraphQLObject {
   version: Int
 }
 
-export interface Hello {
-  greeting: String
+export interface ExchangeStats {
+  pair: String
+  period: String
+  intervalMinutes: Int
+  minRate: Float
+  maxRate: Float
+  avgRate: Float
+}
+
+export interface LastExchange {
+  pair: String
+  fromAmount: String
+  toAmount: String
+  rate: Float
+  timestamp: String
+}
+
+export interface LiquidityChange extends BaseGraphQLObject {
+  id: ID_Output
+  createdAt: DateTime
+  createdById: String
+  updatedAt?: DateTime | null
+  updatedById?: String | null
+  deletedAt?: DateTime | null
+  deletedById?: String | null
+  version: Int
+  timestamp: BigInt
+  blockNumber: Int
+  eventIdx: Int
+  currencyZero: String
+  balanceZero: BigInt
+  currencyOne: String
+  balanceOne: BigInt
+  liquidity: BigInt
+}
+
+export interface LiquidityChangeConnection {
+  totalCount: Int
+  edges: Array<LiquidityChangeEdge>
+  pageInfo: PageInfo
+}
+
+export interface LiquidityChangeEdge {
+  node: LiquidityChange
+  cursor: String
 }
 
 export interface PageInfo {

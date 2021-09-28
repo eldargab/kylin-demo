@@ -67,8 +67,184 @@ interface DeleteResponse {
   id: ID!
 }
 
-type Hello {
-  greeting: String!
+input ExchangeRatesInput {
+  intervalMinutes: Int!
+  pair: String
+  periodFrom: String
+  periodTo: String
+}
+
+type ExchangeStats {
+  pair: String!
+  period: String!
+  intervalMinutes: Int!
+  minRate: Float!
+  maxRate: Float!
+  avgRate: Float!
+}
+
+type LastExchange {
+  pair: String!
+  fromAmount: String!
+  toAmount: String!
+  rate: Float!
+  timestamp: String!
+}
+
+type LiquidityChange implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  timestamp: BigInt!
+  blockNumber: Int!
+  eventIdx: Int!
+  currencyZero: String!
+  balanceZero: BigInt!
+  currencyOne: String!
+  balanceOne: BigInt!
+  liquidity: BigInt!
+}
+
+type LiquidityChangeConnection {
+  totalCount: Int!
+  edges: [LiquidityChangeEdge!]!
+  pageInfo: PageInfo!
+}
+
+input LiquidityChangeCreateInput {
+  timestamp: String!
+  blockNumber: Float!
+  eventIdx: Float!
+  currencyZero: String!
+  balanceZero: String!
+  currencyOne: String!
+  balanceOne: String!
+  liquidity: String!
+}
+
+type LiquidityChangeEdge {
+  node: LiquidityChange!
+  cursor: String!
+}
+
+enum LiquidityChangeOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  timestamp_ASC
+  timestamp_DESC
+  blockNumber_ASC
+  blockNumber_DESC
+  eventIdx_ASC
+  eventIdx_DESC
+  currencyZero_ASC
+  currencyZero_DESC
+  balanceZero_ASC
+  balanceZero_DESC
+  currencyOne_ASC
+  currencyOne_DESC
+  balanceOne_ASC
+  balanceOne_DESC
+  liquidity_ASC
+  liquidity_DESC
+}
+
+input LiquidityChangeUpdateInput {
+  timestamp: String
+  blockNumber: Float
+  eventIdx: Float
+  currencyZero: String
+  balanceZero: String
+  currencyOne: String
+  balanceOne: String
+  liquidity: String
+}
+
+input LiquidityChangeWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  timestamp_eq: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  blockNumber_eq: Int
+  blockNumber_gt: Int
+  blockNumber_gte: Int
+  blockNumber_lt: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  eventIdx_eq: Int
+  eventIdx_gt: Int
+  eventIdx_gte: Int
+  eventIdx_lt: Int
+  eventIdx_lte: Int
+  eventIdx_in: [Int!]
+  currencyZero_eq: String
+  currencyZero_contains: String
+  currencyZero_startsWith: String
+  currencyZero_endsWith: String
+  currencyZero_in: [String!]
+  balanceZero_eq: BigInt
+  balanceZero_gt: BigInt
+  balanceZero_gte: BigInt
+  balanceZero_lt: BigInt
+  balanceZero_lte: BigInt
+  balanceZero_in: [BigInt!]
+  currencyOne_eq: String
+  currencyOne_contains: String
+  currencyOne_startsWith: String
+  currencyOne_endsWith: String
+  currencyOne_in: [String!]
+  balanceOne_eq: BigInt
+  balanceOne_gt: BigInt
+  balanceOne_gte: BigInt
+  balanceOne_lt: BigInt
+  balanceOne_lte: BigInt
+  balanceOne_in: [BigInt!]
+  liquidity_eq: BigInt
+  liquidity_gt: BigInt
+  liquidity_gte: BigInt
+  liquidity_lt: BigInt
+  liquidity_lte: BigInt
+  liquidity_in: [BigInt!]
+  AND: [LiquidityChangeWhereInput!]
+  OR: [LiquidityChangeWhereInput!]
+}
+
+input LiquidityChangeWhereUniqueInput {
+  id: ID!
 }
 
 type PageInfo {
@@ -86,10 +262,15 @@ type ProcessorState {
 }
 
 type Query {
+  liquidityChanges(offset: Int, limit: Int = 50, where: LiquidityChangeWhereInput, orderBy: [LiquidityChangeOrderByInput!]): [LiquidityChange!]!
+  liquidityChangeByUniqueInput(where: LiquidityChangeWhereUniqueInput!): LiquidityChange
+  liquidityChangesConnection(first: Int, after: String, last: Int, before: String, where: LiquidityChangeWhereInput, orderBy: [LiquidityChangeOrderByInput!]): LiquidityChangeConnection!
   swaps(offset: Int, limit: Int = 50, where: SwapWhereInput, orderBy: [SwapOrderByInput!]): [Swap!]!
   swapByUniqueInput(where: SwapWhereUniqueInput!): Swap
   swapsConnection(first: Int, after: String, last: Int, before: String, where: SwapWhereInput, orderBy: [SwapOrderByInput!]): SwapConnection!
-  hello: Hello!
+  ratesHistory(params: ExchangeRatesInput!): [ExchangeStats!]!
+  currentExchangeRates(intervalMinutes: Int = 10): [ExchangeStats!]!
+  lastExchanges: [LastExchange!]!
 }
 
 type StandardDeleteResponse {

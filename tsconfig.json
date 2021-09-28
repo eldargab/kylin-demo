@@ -12,7 +12,11 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmitOnError": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@polkadot/api/augment": ["./node_modules/@acala-network/types/interfaces/augment-api.d.ts"],
+      "@polkadot/types/augment": ["./node_modules/@acala-network/types/interfaces/augment-types.d.ts"]
+    }
   },
   "exclude": [
     "node_modules"

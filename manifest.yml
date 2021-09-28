@@ -8,6 +8,8 @@ typegen:
     source: wss://karura-rpc-3.aca-api.network/ws
   events:
     - dex.Swap
+    - dex.AddLiquidity
+    - dex.RemoveLiquidity
   customTypes:
     lib: "@acala-network/types/interfaces"
     typedefsLoc: types.json
@@ -19,6 +21,10 @@ mappings:
   eventHandlers:
     - event: dex.Swap
       handler: handleSwap
+    - event: dex.AddLiquidity
+      handler: handleAddLiquidity
+    - event: dex.RemoveLiquidity
+      handler: handleRemoveLiquidity
   extrinsicHandlers:
   preBlockHooks:
   postBlockHooks:
