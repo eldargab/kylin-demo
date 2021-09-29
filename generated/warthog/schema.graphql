@@ -103,11 +103,11 @@ type LiquidityChange implements BaseGraphQLObject {
   timestamp: BigInt!
   blockNumber: Int!
   eventIdx: Int!
+  reason: LiquidityChangeReason!
   currencyZero: String!
   balanceZero: BigInt!
   currencyOne: String!
   balanceOne: BigInt!
-  liquidity: BigInt!
 }
 
 type LiquidityChangeConnection {
@@ -120,11 +120,11 @@ input LiquidityChangeCreateInput {
   timestamp: String!
   blockNumber: Float!
   eventIdx: Float!
+  reason: LiquidityChangeReason!
   currencyZero: String!
   balanceZero: String!
   currencyOne: String!
   balanceOne: String!
-  liquidity: String!
 }
 
 type LiquidityChangeEdge {
@@ -145,6 +145,8 @@ enum LiquidityChangeOrderByInput {
   blockNumber_DESC
   eventIdx_ASC
   eventIdx_DESC
+  reason_ASC
+  reason_DESC
   currencyZero_ASC
   currencyZero_DESC
   balanceZero_ASC
@@ -153,19 +155,24 @@ enum LiquidityChangeOrderByInput {
   currencyOne_DESC
   balanceOne_ASC
   balanceOne_DESC
-  liquidity_ASC
-  liquidity_DESC
+}
+
+enum LiquidityChangeReason {
+  INIT
+  SWAP
+  ADD
+  REMOVE
 }
 
 input LiquidityChangeUpdateInput {
   timestamp: String
   blockNumber: Float
   eventIdx: Float
+  reason: LiquidityChangeReason
   currencyZero: String
   balanceZero: String
   currencyOne: String
   balanceOne: String
-  liquidity: String
 }
 
 input LiquidityChangeWhereInput {
@@ -211,6 +218,8 @@ input LiquidityChangeWhereInput {
   eventIdx_lt: Int
   eventIdx_lte: Int
   eventIdx_in: [Int!]
+  reason_eq: LiquidityChangeReason
+  reason_in: [LiquidityChangeReason!]
   currencyZero_eq: String
   currencyZero_contains: String
   currencyZero_startsWith: String
@@ -233,12 +242,6 @@ input LiquidityChangeWhereInput {
   balanceOne_lt: BigInt
   balanceOne_lte: BigInt
   balanceOne_in: [BigInt!]
-  liquidity_eq: BigInt
-  liquidity_gt: BigInt
-  liquidity_gte: BigInt
-  liquidity_lt: BigInt
-  liquidity_lte: BigInt
-  liquidity_in: [BigInt!]
   AND: [LiquidityChangeWhereInput!]
   OR: [LiquidityChangeWhereInput!]
 }
@@ -291,6 +294,9 @@ type Swap implements BaseGraphQLObject {
   deletedById: String
   version: Int!
   timestamp: BigInt!
+  blockNumber: Int!
+  eventIdx: Int!
+  step: Int!
   fromCurrency: String!
   toCurrency: String!
   fromAmount: BigInt!
@@ -305,6 +311,9 @@ type SwapConnection {
 
 input SwapCreateInput {
   timestamp: String!
+  blockNumber: Float!
+  eventIdx: Float!
+  step: Float!
   fromCurrency: String!
   toCurrency: String!
   fromAmount: String!
@@ -325,6 +334,12 @@ enum SwapOrderByInput {
   deletedAt_DESC
   timestamp_ASC
   timestamp_DESC
+  blockNumber_ASC
+  blockNumber_DESC
+  eventIdx_ASC
+  eventIdx_DESC
+  step_ASC
+  step_DESC
   fromCurrency_ASC
   fromCurrency_DESC
   toCurrency_ASC
@@ -337,6 +352,9 @@ enum SwapOrderByInput {
 
 input SwapUpdateInput {
   timestamp: String
+  blockNumber: Float
+  eventIdx: Float
+  step: Float
   fromCurrency: String
   toCurrency: String
   fromAmount: String
@@ -374,6 +392,24 @@ input SwapWhereInput {
   timestamp_lt: BigInt
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
+  blockNumber_eq: Int
+  blockNumber_gt: Int
+  blockNumber_gte: Int
+  blockNumber_lt: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  eventIdx_eq: Int
+  eventIdx_gt: Int
+  eventIdx_gte: Int
+  eventIdx_lt: Int
+  eventIdx_lte: Int
+  eventIdx_in: [Int!]
+  step_eq: Int
+  step_gt: Int
+  step_gte: Int
+  step_lt: Int
+  step_lte: Int
+  step_in: [Int!]
   fromCurrency_eq: String
   fromCurrency_contains: String
   fromCurrency_startsWith: String

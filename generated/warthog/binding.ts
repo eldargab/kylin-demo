@@ -59,6 +59,8 @@ export type LiquidityChangeOrderByInput =   'createdAt_ASC' |
   'blockNumber_DESC' |
   'eventIdx_ASC' |
   'eventIdx_DESC' |
+  'reason_ASC' |
+  'reason_DESC' |
   'currencyZero_ASC' |
   'currencyZero_DESC' |
   'balanceZero_ASC' |
@@ -66,9 +68,12 @@ export type LiquidityChangeOrderByInput =   'createdAt_ASC' |
   'currencyOne_ASC' |
   'currencyOne_DESC' |
   'balanceOne_ASC' |
-  'balanceOne_DESC' |
-  'liquidity_ASC' |
-  'liquidity_DESC'
+  'balanceOne_DESC'
+
+export type LiquidityChangeReason =   'INIT' |
+  'SWAP' |
+  'ADD' |
+  'REMOVE'
 
 export type SwapOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -78,6 +83,12 @@ export type SwapOrderByInput =   'createdAt_ASC' |
   'deletedAt_DESC' |
   'timestamp_ASC' |
   'timestamp_DESC' |
+  'blockNumber_ASC' |
+  'blockNumber_DESC' |
+  'eventIdx_ASC' |
+  'eventIdx_DESC' |
+  'step_ASC' |
+  'step_DESC' |
   'fromCurrency_ASC' |
   'fromCurrency_DESC' |
   'toCurrency_ASC' |
@@ -122,22 +133,22 @@ export interface LiquidityChangeCreateInput {
   timestamp: String
   blockNumber: Float
   eventIdx: Float
+  reason: LiquidityChangeReason
   currencyZero: String
   balanceZero: String
   currencyOne: String
   balanceOne: String
-  liquidity: String
 }
 
 export interface LiquidityChangeUpdateInput {
   timestamp?: String | null
   blockNumber?: Float | null
   eventIdx?: Float | null
+  reason?: LiquidityChangeReason | null
   currencyZero?: String | null
   balanceZero?: String | null
   currencyOne?: String | null
   balanceOne?: String | null
-  liquidity?: String | null
 }
 
 export interface LiquidityChangeWhereInput {
@@ -183,6 +194,8 @@ export interface LiquidityChangeWhereInput {
   eventIdx_lt?: Int | null
   eventIdx_lte?: Int | null
   eventIdx_in?: Int[] | Int | null
+  reason_eq?: LiquidityChangeReason | null
+  reason_in?: LiquidityChangeReason[] | LiquidityChangeReason | null
   currencyZero_eq?: String | null
   currencyZero_contains?: String | null
   currencyZero_startsWith?: String | null
@@ -205,12 +218,6 @@ export interface LiquidityChangeWhereInput {
   balanceOne_lt?: BigInt | null
   balanceOne_lte?: BigInt | null
   balanceOne_in?: BigInt[] | BigInt | null
-  liquidity_eq?: BigInt | null
-  liquidity_gt?: BigInt | null
-  liquidity_gte?: BigInt | null
-  liquidity_lt?: BigInt | null
-  liquidity_lte?: BigInt | null
-  liquidity_in?: BigInt[] | BigInt | null
   AND?: LiquidityChangeWhereInput[] | LiquidityChangeWhereInput | null
   OR?: LiquidityChangeWhereInput[] | LiquidityChangeWhereInput | null
 }
@@ -221,6 +228,9 @@ export interface LiquidityChangeWhereUniqueInput {
 
 export interface SwapCreateInput {
   timestamp: String
+  blockNumber: Float
+  eventIdx: Float
+  step: Float
   fromCurrency: String
   toCurrency: String
   fromAmount: String
@@ -229,6 +239,9 @@ export interface SwapCreateInput {
 
 export interface SwapUpdateInput {
   timestamp?: String | null
+  blockNumber?: Float | null
+  eventIdx?: Float | null
+  step?: Float | null
   fromCurrency?: String | null
   toCurrency?: String | null
   fromAmount?: String | null
@@ -266,6 +279,24 @@ export interface SwapWhereInput {
   timestamp_lt?: BigInt | null
   timestamp_lte?: BigInt | null
   timestamp_in?: BigInt[] | BigInt | null
+  blockNumber_eq?: Int | null
+  blockNumber_gt?: Int | null
+  blockNumber_gte?: Int | null
+  blockNumber_lt?: Int | null
+  blockNumber_lte?: Int | null
+  blockNumber_in?: Int[] | Int | null
+  eventIdx_eq?: Int | null
+  eventIdx_gt?: Int | null
+  eventIdx_gte?: Int | null
+  eventIdx_lt?: Int | null
+  eventIdx_lte?: Int | null
+  eventIdx_in?: Int[] | Int | null
+  step_eq?: Int | null
+  step_gt?: Int | null
+  step_gte?: Int | null
+  step_lt?: Int | null
+  step_lte?: Int | null
+  step_in?: Int[] | Int | null
   fromCurrency_eq?: String | null
   fromCurrency_contains?: String | null
   fromCurrency_startsWith?: String | null
@@ -362,11 +393,11 @@ export interface LiquidityChange extends BaseGraphQLObject {
   timestamp: BigInt
   blockNumber: Int
   eventIdx: Int
+  reason: LiquidityChangeReason
   currencyZero: String
   balanceZero: BigInt
   currencyOne: String
   balanceOne: BigInt
-  liquidity: BigInt
 }
 
 export interface LiquidityChangeConnection {
@@ -408,6 +439,9 @@ export interface Swap extends BaseGraphQLObject {
   deletedById?: String | null
   version: Int
   timestamp: BigInt
+  blockNumber: Int
+  eventIdx: Int
+  step: Int
   fromCurrency: String
   toCurrency: String
   fromAmount: BigInt

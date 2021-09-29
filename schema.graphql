@@ -1,6 +1,9 @@
 type Swap @entity {
   id: ID!
   timestamp: BigInt!
+  blockNumber: Int!
+  eventIdx: Int!
+  step: Int!
   fromCurrency: String!
   toCurrency: String!
   fromAmount: BigInt!
@@ -13,9 +16,17 @@ type LiquidityChange @entity {
   timestamp: BigInt!
   blockNumber: Int!
   eventIdx: Int!
+  reason: LiquidityChangeReason!
   currencyZero: String!
   balanceZero: BigInt!
   currencyOne: String!
   balanceOne: BigInt!
-  liquidity: BigInt!
+}
+
+
+enum LiquidityChangeReason {
+  INIT
+  SWAP
+  ADD
+  REMOVE
 }

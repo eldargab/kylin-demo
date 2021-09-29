@@ -1,4 +1,4 @@
-import { BaseModel, NumericField, Model, StringField, JSONField } from '@subsquid/warthog';
+import { BaseModel, IntField, NumericField, Model, StringField, JSONField } from '@subsquid/warthog';
 
 import BN from 'bn.js';
 
@@ -14,6 +14,15 @@ export class Swap extends BaseModel {
     },
   })
   timestamp!: BN;
+
+  @IntField({})
+  blockNumber!: number;
+
+  @IntField({})
+  eventIdx!: number;
+
+  @IntField({})
+  step!: number;
 
   @StringField({})
   fromCurrency!: string;

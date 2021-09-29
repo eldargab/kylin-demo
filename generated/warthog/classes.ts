@@ -23,6 +23,8 @@ const { GraphQLJSONObject } = require('graphql-type-json');
 // @ts-ignore
 import { BaseWhereInput, JsonObject, PaginationArgs, DateOnlyString, DateTimeString, BigInt, Bytes } from '@subsquid/warthog';
 
+import { LiquidityChangeReason } from "../modules/liquidity-change/liquidity-change.model";
+
 // @ts-ignore
 import { LiquidityChange } from "../modules/liquidity-change/liquidity-change.model";
 // @ts-ignore
@@ -47,6 +49,9 @@ export enum LiquidityChangeOrderByEnum {
   eventIdx_ASC = "eventIdx_ASC",
   eventIdx_DESC = "eventIdx_DESC",
 
+  reason_ASC = "reason_ASC",
+  reason_DESC = "reason_DESC",
+
   currencyZero_ASC = "currencyZero_ASC",
   currencyZero_DESC = "currencyZero_DESC",
 
@@ -58,9 +63,6 @@ export enum LiquidityChangeOrderByEnum {
 
   balanceOne_ASC = "balanceOne_ASC",
   balanceOne_DESC = "balanceOne_DESC",
-
-  liquidity_ASC = "liquidity_ASC",
-  liquidity_DESC = "liquidity_DESC",
 }
 
 registerEnumType(LiquidityChangeOrderByEnum, {
@@ -195,6 +197,12 @@ export class LiquidityChangeWhereInput {
   @TypeGraphQLField(() => [Int], { nullable: true })
   eventIdx_in?: number[];
 
+  @TypeGraphQLField(() => LiquidityChangeReason, { nullable: true })
+  reason_eq?: LiquidityChangeReason;
+
+  @TypeGraphQLField(() => [LiquidityChangeReason], { nullable: true })
+  reason_in?: LiquidityChangeReason[];
+
   @TypeGraphQLField({ nullable: true })
   currencyZero_eq?: string;
 
@@ -261,24 +269,6 @@ export class LiquidityChangeWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   balanceOne_in?: string[];
 
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  liquidity_eq?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  liquidity_gt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  liquidity_gte?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  liquidity_lt?: string;
-
-  @TypeGraphQLField(() => BigInt, { nullable: true })
-  liquidity_lte?: string;
-
-  @TypeGraphQLField(() => [BigInt], { nullable: true })
-  liquidity_in?: string[];
-
   @TypeGraphQLField(() => LiquidityChangeWhereInput, { nullable: true })
   AND?: [LiquidityChangeWhereInput];
 
@@ -303,6 +293,9 @@ export class LiquidityChangeCreateInput {
   @TypeGraphQLField()
   eventIdx!: number;
 
+  @TypeGraphQLField(() => LiquidityChangeReason)
+  reason!: LiquidityChangeReason;
+
   @TypeGraphQLField()
   currencyZero!: string;
 
@@ -314,9 +307,6 @@ export class LiquidityChangeCreateInput {
 
   @TypeGraphQLField()
   balanceOne!: string;
-
-  @TypeGraphQLField()
-  liquidity!: string;
 }
 
 @TypeGraphQLInputType()
@@ -330,6 +320,9 @@ export class LiquidityChangeUpdateInput {
   @TypeGraphQLField({ nullable: true })
   eventIdx?: number;
 
+  @TypeGraphQLField(() => LiquidityChangeReason, { nullable: true })
+  reason?: LiquidityChangeReason;
+
   @TypeGraphQLField({ nullable: true })
   currencyZero?: string;
 
@@ -341,9 +334,6 @@ export class LiquidityChangeUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   balanceOne?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  liquidity?: string;
 }
 
 @ArgsType()
@@ -379,6 +369,15 @@ export enum SwapOrderByEnum {
 
   timestamp_ASC = "timestamp_ASC",
   timestamp_DESC = "timestamp_DESC",
+
+  blockNumber_ASC = "blockNumber_ASC",
+  blockNumber_DESC = "blockNumber_DESC",
+
+  eventIdx_ASC = "eventIdx_ASC",
+  eventIdx_DESC = "eventIdx_DESC",
+
+  step_ASC = "step_ASC",
+  step_DESC = "step_DESC",
 
   fromCurrency_ASC = "fromCurrency_ASC",
   fromCurrency_DESC = "fromCurrency_DESC",
@@ -489,6 +488,60 @@ export class SwapWhereInput {
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   timestamp_in?: string[];
 
+  @TypeGraphQLField(() => Int, { nullable: true })
+  blockNumber_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  blockNumber_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  blockNumber_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  blockNumber_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  blockNumber_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  blockNumber_in?: number[];
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  eventIdx_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  eventIdx_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  eventIdx_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  eventIdx_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  eventIdx_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  eventIdx_in?: number[];
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  step_in?: number[];
+
   @TypeGraphQLField({ nullable: true })
   fromCurrency_eq?: string;
 
@@ -574,6 +627,15 @@ export class SwapCreateInput {
   timestamp!: string;
 
   @TypeGraphQLField()
+  blockNumber!: number;
+
+  @TypeGraphQLField()
+  eventIdx!: number;
+
+  @TypeGraphQLField()
+  step!: number;
+
+  @TypeGraphQLField()
   fromCurrency!: string;
 
   @TypeGraphQLField()
@@ -590,6 +652,15 @@ export class SwapCreateInput {
 export class SwapUpdateInput {
   @TypeGraphQLField({ nullable: true })
   timestamp?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  blockNumber?: number;
+
+  @TypeGraphQLField({ nullable: true })
+  eventIdx?: number;
+
+  @TypeGraphQLField({ nullable: true })
+  step?: number;
 
   @TypeGraphQLField({ nullable: true })
   fromCurrency?: string;
