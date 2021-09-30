@@ -24,11 +24,35 @@ export class LiquidityChange extends BaseModel {
   @IntField({})
   eventIdx!: number;
 
+  @IntField({})
+  step!: number;
+
   @EnumField('LiquidityChangeReason', LiquidityChangeReason, {})
   reason!: LiquidityChangeReason;
 
   @StringField({})
   currencyZero!: string;
+
+  @StringField({})
+  currencyOne!: string;
+
+  @NumericField({
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountZero!: BN;
+
+  @NumericField({
+    transformer: {
+      to: (entityValue: BN) => (entityValue !== undefined ? entityValue.toString(10) : null),
+      from: (dbValue: string) =>
+        dbValue !== undefined && dbValue !== null && dbValue.length > 0 ? new BN(dbValue, 10) : undefined,
+    },
+  })
+  amountOne!: BN;
 
   @NumericField({
     transformer: {
@@ -38,9 +62,6 @@ export class LiquidityChange extends BaseModel {
     },
   })
   balanceZero!: BN;
-
-  @StringField({})
-  currencyOne!: string;
 
   @NumericField({
     transformer: {

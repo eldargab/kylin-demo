@@ -103,10 +103,13 @@ type LiquidityChange implements BaseGraphQLObject {
   timestamp: BigInt!
   blockNumber: Int!
   eventIdx: Int!
+  step: Int!
   reason: LiquidityChangeReason!
   currencyZero: String!
-  balanceZero: BigInt!
   currencyOne: String!
+  amountZero: BigInt!
+  amountOne: BigInt!
+  balanceZero: BigInt!
   balanceOne: BigInt!
 }
 
@@ -120,10 +123,13 @@ input LiquidityChangeCreateInput {
   timestamp: String!
   blockNumber: Float!
   eventIdx: Float!
+  step: Float!
   reason: LiquidityChangeReason!
   currencyZero: String!
-  balanceZero: String!
   currencyOne: String!
+  amountZero: String!
+  amountOne: String!
+  balanceZero: String!
   balanceOne: String!
 }
 
@@ -145,14 +151,20 @@ enum LiquidityChangeOrderByInput {
   blockNumber_DESC
   eventIdx_ASC
   eventIdx_DESC
+  step_ASC
+  step_DESC
   reason_ASC
   reason_DESC
   currencyZero_ASC
   currencyZero_DESC
-  balanceZero_ASC
-  balanceZero_DESC
   currencyOne_ASC
   currencyOne_DESC
+  amountZero_ASC
+  amountZero_DESC
+  amountOne_ASC
+  amountOne_DESC
+  balanceZero_ASC
+  balanceZero_DESC
   balanceOne_ASC
   balanceOne_DESC
 }
@@ -168,10 +180,13 @@ input LiquidityChangeUpdateInput {
   timestamp: String
   blockNumber: Float
   eventIdx: Float
+  step: Float
   reason: LiquidityChangeReason
   currencyZero: String
-  balanceZero: String
   currencyOne: String
+  amountZero: String
+  amountOne: String
+  balanceZero: String
   balanceOne: String
 }
 
@@ -218,6 +233,12 @@ input LiquidityChangeWhereInput {
   eventIdx_lt: Int
   eventIdx_lte: Int
   eventIdx_in: [Int!]
+  step_eq: Int
+  step_gt: Int
+  step_gte: Int
+  step_lt: Int
+  step_lte: Int
+  step_in: [Int!]
   reason_eq: LiquidityChangeReason
   reason_in: [LiquidityChangeReason!]
   currencyZero_eq: String
@@ -225,17 +246,29 @@ input LiquidityChangeWhereInput {
   currencyZero_startsWith: String
   currencyZero_endsWith: String
   currencyZero_in: [String!]
+  currencyOne_eq: String
+  currencyOne_contains: String
+  currencyOne_startsWith: String
+  currencyOne_endsWith: String
+  currencyOne_in: [String!]
+  amountZero_eq: BigInt
+  amountZero_gt: BigInt
+  amountZero_gte: BigInt
+  amountZero_lt: BigInt
+  amountZero_lte: BigInt
+  amountZero_in: [BigInt!]
+  amountOne_eq: BigInt
+  amountOne_gt: BigInt
+  amountOne_gte: BigInt
+  amountOne_lt: BigInt
+  amountOne_lte: BigInt
+  amountOne_in: [BigInt!]
   balanceZero_eq: BigInt
   balanceZero_gt: BigInt
   balanceZero_gte: BigInt
   balanceZero_lt: BigInt
   balanceZero_lte: BigInt
   balanceZero_in: [BigInt!]
-  currencyOne_eq: String
-  currencyOne_contains: String
-  currencyOne_startsWith: String
-  currencyOne_endsWith: String
-  currencyOne_in: [String!]
   balanceOne_eq: BigInt
   balanceOne_gt: BigInt
   balanceOne_gte: BigInt

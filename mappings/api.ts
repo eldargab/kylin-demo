@@ -4,7 +4,7 @@ import {WsProvider} from '@polkadot/rpc-provider'
 
 const provider = new WsProvider('wss://karura-rpc-3.aca-api.network/ws')
 const api = new ApiPromise(options({provider}))
-api.isReady.catch(err => console.error(err))
+api.isReady.catch(() => {})
 
 export async function acala(): Promise<ApiPromise> {
     await api.isReady

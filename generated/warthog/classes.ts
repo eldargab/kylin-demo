@@ -49,17 +49,26 @@ export enum LiquidityChangeOrderByEnum {
   eventIdx_ASC = "eventIdx_ASC",
   eventIdx_DESC = "eventIdx_DESC",
 
+  step_ASC = "step_ASC",
+  step_DESC = "step_DESC",
+
   reason_ASC = "reason_ASC",
   reason_DESC = "reason_DESC",
 
   currencyZero_ASC = "currencyZero_ASC",
   currencyZero_DESC = "currencyZero_DESC",
 
-  balanceZero_ASC = "balanceZero_ASC",
-  balanceZero_DESC = "balanceZero_DESC",
-
   currencyOne_ASC = "currencyOne_ASC",
   currencyOne_DESC = "currencyOne_DESC",
+
+  amountZero_ASC = "amountZero_ASC",
+  amountZero_DESC = "amountZero_DESC",
+
+  amountOne_ASC = "amountOne_ASC",
+  amountOne_DESC = "amountOne_DESC",
+
+  balanceZero_ASC = "balanceZero_ASC",
+  balanceZero_DESC = "balanceZero_DESC",
 
   balanceOne_ASC = "balanceOne_ASC",
   balanceOne_DESC = "balanceOne_DESC",
@@ -197,6 +206,24 @@ export class LiquidityChangeWhereInput {
   @TypeGraphQLField(() => [Int], { nullable: true })
   eventIdx_in?: number[];
 
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  step_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  step_in?: number[];
+
   @TypeGraphQLField(() => LiquidityChangeReason, { nullable: true })
   reason_eq?: LiquidityChangeReason;
 
@@ -218,6 +245,57 @@ export class LiquidityChangeWhereInput {
   @TypeGraphQLField(() => [String], { nullable: true })
   currencyZero_in?: string[];
 
+  @TypeGraphQLField({ nullable: true })
+  currencyOne_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  currencyOne_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  currencyOne_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  currencyOne_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  currencyOne_in?: string[];
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountZero_eq?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountZero_gt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountZero_gte?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountZero_lt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountZero_lte?: string;
+
+  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  amountZero_in?: string[];
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountOne_eq?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountOne_gt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountOne_gte?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountOne_lt?: string;
+
+  @TypeGraphQLField(() => BigInt, { nullable: true })
+  amountOne_lte?: string;
+
+  @TypeGraphQLField(() => [BigInt], { nullable: true })
+  amountOne_in?: string[];
+
   @TypeGraphQLField(() => BigInt, { nullable: true })
   balanceZero_eq?: string;
 
@@ -235,21 +313,6 @@ export class LiquidityChangeWhereInput {
 
   @TypeGraphQLField(() => [BigInt], { nullable: true })
   balanceZero_in?: string[];
-
-  @TypeGraphQLField({ nullable: true })
-  currencyOne_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  currencyOne_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  currencyOne_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  currencyOne_endsWith?: string;
-
-  @TypeGraphQLField(() => [String], { nullable: true })
-  currencyOne_in?: string[];
 
   @TypeGraphQLField(() => BigInt, { nullable: true })
   balanceOne_eq?: string;
@@ -293,6 +356,9 @@ export class LiquidityChangeCreateInput {
   @TypeGraphQLField()
   eventIdx!: number;
 
+  @TypeGraphQLField()
+  step!: number;
+
   @TypeGraphQLField(() => LiquidityChangeReason)
   reason!: LiquidityChangeReason;
 
@@ -300,10 +366,16 @@ export class LiquidityChangeCreateInput {
   currencyZero!: string;
 
   @TypeGraphQLField()
-  balanceZero!: string;
+  currencyOne!: string;
 
   @TypeGraphQLField()
-  currencyOne!: string;
+  amountZero!: string;
+
+  @TypeGraphQLField()
+  amountOne!: string;
+
+  @TypeGraphQLField()
+  balanceZero!: string;
 
   @TypeGraphQLField()
   balanceOne!: string;
@@ -320,6 +392,9 @@ export class LiquidityChangeUpdateInput {
   @TypeGraphQLField({ nullable: true })
   eventIdx?: number;
 
+  @TypeGraphQLField({ nullable: true })
+  step?: number;
+
   @TypeGraphQLField(() => LiquidityChangeReason, { nullable: true })
   reason?: LiquidityChangeReason;
 
@@ -327,10 +402,16 @@ export class LiquidityChangeUpdateInput {
   currencyZero?: string;
 
   @TypeGraphQLField({ nullable: true })
-  balanceZero?: string;
+  currencyOne?: string;
 
   @TypeGraphQLField({ nullable: true })
-  currencyOne?: string;
+  amountZero?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  amountOne?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  balanceZero?: string;
 
   @TypeGraphQLField({ nullable: true })
   balanceOne?: string;

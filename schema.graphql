@@ -16,10 +16,13 @@ type LiquidityChange @entity {
   timestamp: BigInt!
   blockNumber: Int!
   eventIdx: Int!
+  step: Int!
   reason: LiquidityChangeReason!
   currencyZero: String!
-  balanceZero: BigInt!
   currencyOne: String!
+  amountZero: BigInt!
+  amountOne: BigInt!
+  balanceZero: BigInt!
   balanceOne: BigInt!
 }
 
